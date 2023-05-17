@@ -1,12 +1,36 @@
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { registerRootComponent } from "expo";
+import UserLogin from "./components/UserLogin";
+import GoalSetup from "./components/GoalSetup";
+
+interface User {
+  username: string;
+  password: string;
+}
 
 const App: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [goal, setGoal] = useState<string>("");
+  const [time, setTime] = useState<number>(0);
+
+  const handleLogin = (user: User) => {
+    setUser(user);
+  };
+
+  const handleGoalSet = (goal: string, time: number) => {
+    setGoal(goal);
+    setTime(time);
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      {!user ? (
+        <UserLogin onLogin={handleLogin} />
+      ) : (
+        <GoalSetup onGoalSet={handleGoalSet} />
+      )}
       <StatusBar style="auto" />
     </View>
   );
