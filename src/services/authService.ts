@@ -16,6 +16,7 @@ const authService = {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log(userInfo);
+      return userInfo;
       // TODO: handle user login here
     } catch (error: any) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {

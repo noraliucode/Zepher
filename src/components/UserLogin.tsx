@@ -1,12 +1,25 @@
-// UserLogin.tsx
-import React, { useEffect } from "react";
-import { View, StyleSheet, Alert, Button } from "react-native";
+import React from "react";
+import { View, StyleSheet, Button } from "react-native";
 import authService from "../services/authService";
+import { IOnLogin } from "../utils/types";
 
-const UserLogin: React.FC = () => {
+interface IProps {
+  onLogin: IOnLogin;
+}
+
+const UserLogin: React.FC<IProps> = ({ onLogin }) => {
+  const signIn = async () => {
+    try {
+      const user = await authService.signIn();
+      onLogin(user);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Button title="Sign in with Google" onPress={authService.signIn} />
+      <Button title="Sign in with Google" onPress={signIn} />
     </View>
   );
 };
