@@ -29,7 +29,7 @@ const App: React.FC = () => {
       {!user ? (
         <UserLogin onLogin={handleLogin} />
       ) : (
-        <GoalSetup onGoalSet={handleGoalSet} />
+        <GoalSetup user={user} onGoalSet={handleGoalSet} />
       )}
       <StatusBar style="auto" />
     </View>

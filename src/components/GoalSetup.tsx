@@ -1,37 +1,85 @@
+// GoalSetup.tsx
 import React, { useState } from "react";
-import { View, Text, TextInput, Button } from "react-native";
+import { View, StyleSheet, TextInput, Button, Alert } from "react-native";
+import storage from "../services/storageService";
+import { User } from "@react-native-google-signin/google-signin";
 
-interface GoalSetupProps {
-  onGoalSet: (goal: string, time: number) => void;
-}
+type IProps = {
+  user: User;
+};
 
-const GoalSetup: React.FC<GoalSetupProps> = ({ onGoalSet }) => {
-  const [goal, setGoal] = useState<string>("");
-  const [time, setTime] = useState<number>(0);
+const GoalSetup: React.FC<IProps> = (props) => {
+  const [goalName, setGoalName] = useState("Test");
+  const [goalDescription, setGoalDescription] = useState("Test Description");
 
-  const handleGoalSet = () => {
-    if (goal && time > 0) {
-      onGoalSet(goal, time);
-      setGoal("");
-      setTime(0);
-    } else {
-      // alert("Please input a valid goal and time.");
+  const { user } = props;
+
+  const handleGoalNameChange = (text: string) => {
+    setGoalName(text);
+  };
+
+  const handleGoalDescriptionChange = (text: string) => {
+    setGoalDescription(text);
+  };
+
+  const handleSubmit = async () => {
+    if (goalName.trim() === "" || goalDescription.trim() === "") {
+      Alert.alert("Please enter a goal name and description");
+      return;
+    }
+
+    try {
+      const goal = {
+        name: goalName,
+        description: goalDescription,
+        createdTime: Date.now(),
+        progress: [],
+      };
+      console.log("user.user.id", user.user.id);
+      console.log("goal", goal);
+
+      await storage.createGoal(user.user.id, goal);
+      setGoalName("");
+      setGoalDescription("");
+      Alert.alert("Goal created successfully");
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Error creating goal. Please try again.");
     }
   };
 
   return (
-    <View>
-      <Text>Set Your Goal</Text>
-      <TextInput placeholder="Your goal" value={goal} onChangeText={setGoal} />
+    <View style={styles.container}>
       <TextInput
-        placeholder="Time (in minutes)"
-        value={String(time)}
-        onChangeText={(text) => setTime(Number(text))}
-        keyboardType="numeric"
+        style={styles.input}
+        onChangeText={handleGoalNameChange}
+        value={goalName}
+        placeholder="Enter your goal name"
       />
-      <Button title="Set Goal" onPress={handleGoalSet} />
+      <TextInput
+        style={styles.input}
+        onChangeText={handleGoalDescriptionChange}
+        value={goalDescription}
+        placeholder="Enter your goal description"
+      />
+      <Button title="Submit Goal" onPress={handleSubmit} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 20,
+  },
+  input: {
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    marginBottom: 20,
+    paddingLeft: 10,
+  },
+});
 
 export default GoalSetup;
