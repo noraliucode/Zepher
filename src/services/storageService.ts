@@ -38,6 +38,20 @@ export async function createGoal(userId: string, goal: any) {
   }
 }
 
+export async function getGoals(userId) {
+  try {
+    const response = await api.get("/");
+    const data = response.data.record;
+    const user = data.users.find((user: any) => user.id === userId);
+
+    return user ? user.goals : [];
+  } catch (error) {
+    console.error("Failed to fetch goals:", error);
+    return [];
+  }
+}
+
 export default {
   createGoal,
+  getGoals,
 };

@@ -4,11 +4,8 @@ import { StyleSheet, View } from "react-native";
 import { registerRootComponent } from "expo";
 import UserLogin from "./components/UserLogin";
 import GoalSetup from "./components/GoalSetup";
-
-interface User {
-  username: string;
-  password: string;
-}
+import Dashboard from "./components/Dashboard";
+import { User } from "@react-native-google-signin/google-signin";
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -29,7 +26,7 @@ const App: React.FC = () => {
       {!user ? (
         <UserLogin onLogin={handleLogin} />
       ) : (
-        <GoalSetup user={user} onGoalSet={handleGoalSet} />
+        <Dashboard userId={user.user.id} />
       )}
       <StatusBar style="auto" />
     </View>
