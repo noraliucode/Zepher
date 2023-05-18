@@ -25,20 +25,20 @@ Before you begin, ensure you have met the following requirements:
 
 Install the project dependencies:
 
-\`\`\`bash
+```
 cd zepher
 npm install # or yarn install if you're using yarn
-\`\`\`
+```
 
 ### Configuration
 
 Create a `.env` file in the root directory of your project. Add the following variables:
 
-\`\`\`bash
+```
 GOOGLE_SIGNIN_WEBCLIENT_ID=YOUR_GOOGLE_SIGNIN_WEBCLIENT_ID
 JSONBIN_API_KEY=YOUR_JSONBIN_API_KEY
 JSONBIN_BIN_ID=YOUR_JSONBIN_BIN_ID
-\`\`\`
+```
 
 Replace `YOUR_GOOGLE_SIGNIN_WEBCLIENT_ID`, `YOUR_JSONBIN_API_KEY`, and `YOUR_JSONBIN_BIN_ID` with your actual information.
 
@@ -46,9 +46,9 @@ Replace `YOUR_GOOGLE_SIGNIN_WEBCLIENT_ID`, `YOUR_JSONBIN_API_KEY`, and `YOUR_JSO
 
 Start the app:
 
-\`\`\`bash
+```
 expo start
-\`\`\`
+```
 
 Then, open the Expo app on your phone and scan the QR code. Alternatively, you can use an iOS or Android simulator/emulator on your computer.
 
