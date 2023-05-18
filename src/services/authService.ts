@@ -6,7 +6,6 @@ import Config from "react-native-config";
 
 GoogleSignin.configure({
   webClientId: Config.WEB_CLIENT_ID,
-  iosClientId: Config.IOS_CLIENT_ID,
   offlineAccess: true,
 });
 

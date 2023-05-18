@@ -1,32 +1,43 @@
+// storage.ts
 import axios from "axios";
+import Config from "react-native-config";
 
-const API_KEY = "<YOUR_JSONBIN_API_KEY>"; // replace with your actual API key
-const BIN_ID = "<YOUR_JSONBIN_BIN_ID>"; // replace with your actual bin ID
+const API_KEY = Config.BIN_API_KEY; // replace with your actual API key
+const BIN_ID = Config.BIN_ID; // replace with your actual bin ID
 
 const api = axios.create({
-  baseURL: "https://api.jsonbin.io/v3",
+  baseURL: `https://api.jsonbin.io/v3/b/${BIN_ID}`,
   headers: {
     "X-Master-Key": API_KEY,
     "Content-Type": "application/json",
   },
 });
 
-export const readData = async () => {
+export async function createGoal(userId: string, goal: any) {
   try {
-    const response = await api.get(`/b/${BIN_ID}/latest`);
-    return response.data.record;
-  } catch (error) {
-    console.error("Error reading data from jsonbin:", error);
-    throw error;
+    // Get current data
+    const response = await api.get("/");
+    const data = response.data.record;
+    // Check if user already exists
+    let user = data.users.find((user: any) => user.id === userId);
+    if (user) {
+      // If user exists, add goal to user's goals
+      user.goals.push(goal);
+    } else {
+      // If user doesn't exist, create a new user with the goal
+      user = {
+        id: userId,
+        goals: [goal],
+      };
+      data.users.push(user);
+    }
+    // Update the data in the bin
+    await api.put("/", data);
+  } catch (error: any) {
+    console.error(error);
   }
-};
+}
 
-export const writeData = async (data: any) => {
-  try {
-    const response = await api.put(`/b/${BIN_ID}`, data);
-    return response.data;
-  } catch (error) {
-    console.error("Error writing data to jsonbin:", error);
-    throw error;
-  }
+export default {
+  createGoal,
 };
