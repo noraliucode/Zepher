@@ -1,17 +1,20 @@
 // Dashboard.tsx
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  SafeAreaView,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Button,
-} from "react-native";
 import storage from "../services/storageService";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../context/AuthContext";
+import {
+  Layout,
+  Text,
+  Card,
+  Button,
+  List,
+  ListItem,
+  Divider,
+} from "@ui-kitten/components";
+import { EvaIconsPack } from "@ui-kitten/eva-icons";
+import * as eva from "@eva-design/eva";
+import { ApplicationProvider, IconRegistry } from "@ui-kitten/components";
 
 const Dashboard = () => {
   const navigation = useNavigation();
@@ -34,55 +37,43 @@ const Dashboard = () => {
   };
 
   const renderItem = ({ item }: { item: any }) => (
-    <TouchableOpacity onPress={() => handleGoalPress(item)}>
-      <View style={styles.goal}>
-        <Text style={styles.goalName}>{item.name}</Text>
-        <Text style={styles.goalDescription}>{item.description}</Text>
-      </View>
-    </TouchableOpacity>
+    <Card
+      style={{
+        flex: 1,
+        margin: 5,
+        height: 200,
+        backgroundColor: "#FFA7A7",
+        borderRadius: 10,
+      }}
+      onPress={() => handleGoalPress(item)}
+    >
+      <Text category="h6">{item.name}</Text>
+      <Text category="s2">{item.description}</Text>
+    </Card>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Dashboard</Text>
-      <FlatList
-        data={goals}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => `${item.name}_${index}`}
-      />
-      <Button
-        title="Set New Goal"
-        onPress={() => navigation.navigate("GoalSetup")}
-      />
-    </SafeAreaView>
+    <>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <Layout style={{ flex: 1, padding: 16 }}>
+          <Text category="h1" style={{ marginBottom: 16 }}>
+            Dashboard
+          </Text>
+          <List
+            data={goals}
+            renderItem={renderItem}
+            ItemSeparatorComponent={Divider}
+            style={{ marginBottom: 16 }}
+            numColumns={2}
+          />
+          <Button onPress={() => navigation.navigate("GoalSetup")}>
+            Set New Goal
+          </Button>
+        </Layout>
+      </ApplicationProvider>
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 20,
-    paddingHorizontal: 10,
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  goal: {
-    backgroundColor: "#f9f9f9",
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-  },
-  goalName: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  goalDescription: {
-    fontSize: 14,
-  },
-});
 
 export default Dashboard;
