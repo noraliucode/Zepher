@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Button } from "react-native";
+import { Layout, Button } from "@ui-kitten/components";
 import authService from "../services/authService";
 import { useAuth } from "../context/AuthContext";
 
@@ -17,18 +17,10 @@ const UserLogin: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Button title="Sign in with Google" onPress={signIn} />
-    </View>
+    <Layout style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Button onPress={signIn}>Sign in with Google</Button>
+    </Layout>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
 
 export default UserLogin;
