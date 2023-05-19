@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { updateProgress } from "../services/storageService";
 
 interface ProgressUploadProps {
-  onSubmit: (url: string) => void;
+  route: { params: { userId: string; goalId: string } };
 }
 
-const ProgressUpload: React.FC<ProgressUploadProps> = ({ onSubmit }) => {
+const ProgressUpload: React.FC<ProgressUploadProps> = ({ route }) => {
   const [url, setUrl] = useState<string>("");
 
-  const handleSubmit = () => {
-    if (url) {
-      onSubmit(url);
-      setUrl("");
-    } else {
-      alert("Please input a valid URL.");
-    }
+  const handleSubmit = async () => {
+    const newProgress = { timestamp: Date.now(), link: url };
+    await updateProgress(route.params.userId, route.params.goalId, newProgress);
+    setUrl("");
   };
 
   return (

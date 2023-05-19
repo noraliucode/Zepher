@@ -26,7 +26,10 @@ const Dashboard = () => {
   }, []);
 
   const handleGoalPress = (goal: any) => {
-    navigation.navigate("GoalProgress", { goal });
+    navigation.navigate("GoalProgress", {
+      goalId: goal.id,
+      userId: user?.user.id,
+    });
   };
 
   const renderItem = ({ item }: { item: any }) => (
