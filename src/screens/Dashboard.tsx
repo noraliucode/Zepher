@@ -7,6 +7,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import storage from "../services/storageService";
 import { useNavigation } from "@react-navigation/native";
@@ -48,6 +49,10 @@ const Dashboard = () => {
         data={goals}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item.name}_${index}`}
+      />
+      <Button
+        title="Set New Goal"
+        onPress={() => navigation.navigate("GoalSetup")}
       />
     </SafeAreaView>
   );

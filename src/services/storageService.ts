@@ -77,7 +77,7 @@ export const updateProgress = async (
   try {
     // First, get the existing data
     const response = await api.get("/");
-    const data = response.data;
+    const data = response.data.record;
 
     // Find the user and the goal
     const user = data.users.find((u: { id: string }) => u.id === userId);

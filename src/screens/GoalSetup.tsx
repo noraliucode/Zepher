@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { View, StyleSheet, TextInput, Button, Alert } from "react-native";
 import storage from "../services/storageService";
 import { useAuth } from "../context/AuthContext";
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 
 const GoalSetup: React.FC = () => {
   const [goalName, setGoalName] = useState("");
@@ -25,11 +27,13 @@ const GoalSetup: React.FC = () => {
     }
 
     try {
+      const newId = uuidv4();
       const goal = {
         name: goalName,
         description: goalDescription,
         createdTime: Date.now(),
         progress: [],
+        id: newId,
       };
       if (user) {
         await storage.createGoal(user.user.id, goal);
