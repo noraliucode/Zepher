@@ -1,6 +1,19 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import {
+  ApplicationProvider,
+  IconRegistry,
+  Layout,
+  Text,
+  Input,
+  Button,
+  Icon,
+} from "@ui-kitten/components";
+import { EvaIconsPack } from "@ui-kitten/eva-icons";
+import * as eva from "@eva-design/eva";
 import { updateProgress } from "../services/storageService";
+
+const PlusIcon = (props) => <Icon {...props} name="plus-outline" />;
 
 interface ProgressUploadProps {
   route: { params: { userId: string; goalId: string } };
@@ -16,36 +29,50 @@ const ProgressUpload: React.FC<ProgressUploadProps> = ({ route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Upload Your Progress</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="URL"
-        value={url}
-        onChangeText={setUrl}
-        autoCapitalize="none"
-        keyboardType="url"
-        textContentType="URL"
-      />
-      <Button title="Submit" onPress={handleSubmit} />
-    </View>
+    <>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <Layout style={styles.container}>
+          <Text category="h1">Upload Your Progress</Text>
+          <Input
+            style={styles.input}
+            placeholder="URL"
+            value={url}
+            onChangeText={setUrl}
+            autoCapitalize="none"
+            keyboardType="url"
+            textContentType="URL"
+          />
+          <Button style={styles.button} onPress={handleSubmit}>
+            Submit
+          </Button>
+          <Button
+            style={styles.fab}
+            accessoryLeft={PlusIcon}
+            onPress={handleSubmit}
+          />
+        </Layout>
+      </ApplicationProvider>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 16,
+    flex: 1,
+    justifyContent: "center",
   },
   input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 16,
-    paddingHorizontal: 8,
+    marginVertical: 16,
+  },
+  button: {
+    marginVertical: 8,
+  },
+  fab: {
+    position: "absolute",
+    right: 16,
+    bottom: 16,
   },
 });
 
