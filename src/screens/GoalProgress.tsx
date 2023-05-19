@@ -1,17 +1,20 @@
 // GoalProgress.tsx
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Linking,
-  TouchableOpacity,
-  ScrollView,
-  Button,
-} from "react-native";
+import { Linking } from "react-native";
 import storage from "../services/storageService";
 import { Goal } from "../utils/types";
 import { StackNavigationProp } from "@react-navigation/stack";
+import {
+  Layout,
+  Text,
+  Button,
+  Card,
+  Divider,
+  ApplicationProvider,
+  IconRegistry,
+} from "@ui-kitten/components";
+import { EvaIconsPack } from "@ui-kitten/eva-icons";
+import * as eva from "@eva-design/eva";
 
 type IProps = {
   route: {
@@ -47,66 +50,41 @@ const GoalProgress: React.FC<IProps> = ({ route, navigation }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Goal Progress</Text>
-        {goal &&
-          goal.progress.map((progressDay, index) => (
-            <View key={index} style={styles.progressDay}>
-              <Text style={styles.day}>Day {progressDay.day}</Text>
-              <Text style={styles.date}>
-                Date:{" "}
-                {new Date(progressDay.timestamp * 1000).toLocaleDateString()}
-              </Text>
-              <TouchableOpacity
-                onPress={() => handlePressLink(progressDay.link || "")}
-              >
-                <Text style={styles.link}>View Progress</Text>
-              </TouchableOpacity>
-              <View style={styles.separator} />
-            </View>
-          ))}
-      </View>
-      <Button
-        title="Upload Progress"
-        onPress={() =>
-          navigation.navigate("ProgressUpload", { userId, goalId })
-        }
-      />
-    </ScrollView>
+    <>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <Layout style={{ flex: 1, padding: 16 }}>
+          <Text category="h1">Goal Progress</Text>
+          {goal &&
+            goal.progress.map((progressDay, index) => (
+              <Card key={index} style={{ marginVertical: 8 }}>
+                <Text category="h5">Day {progressDay.day}</Text>
+                <Text category="p1">
+                  Date:{" "}
+                  {new Date(progressDay.timestamp * 1000).toLocaleDateString()}
+                </Text>
+                <Button
+                  appearance="ghost"
+                  status="info"
+                  onPress={() => handlePressLink(progressDay.link || "")}
+                >
+                  View Progress
+                </Button>
+                <Divider />
+              </Card>
+            ))}
+          <Button
+            style={{ marginTop: 16 }}
+            onPress={() =>
+              navigation.navigate("ProgressUpload", { userId, goalId })
+            }
+          >
+            Upload Progress
+          </Button>
+        </Layout>
+      </ApplicationProvider>
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-  progressDay: {
-    marginBottom: 20,
-  },
-  day: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  date: {
-    fontSize: 16,
-    color: "#555",
-  },
-  link: {
-    color: "blue",
-    textDecorationLine: "underline",
-  },
-  separator: {
-    height: 1,
-    backgroundColor: "#ddd",
-    marginVertical: 10,
-  },
-});
 
 export default GoalProgress;
