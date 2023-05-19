@@ -1,7 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Button } from "react-native";
 import authService from "../services/authService";
-import { IOnLogin } from "../utils/types";
 import { useAuth } from "../context/AuthContext";
 
 const UserLogin: React.FC = () => {
