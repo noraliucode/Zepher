@@ -1,112 +1,78 @@
-// GoalProgress.tsx
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
 import {
-  View,
+  ApplicationProvider,
+  IconRegistry,
+  Layout,
   Text,
-  StyleSheet,
-  Linking,
-  TouchableOpacity,
-  ScrollView,
+  Input,
   Button,
-} from "react-native";
-import storage from "../services/storageService";
-import { Goal } from "../utils/types";
-import { StackNavigationProp } from "@react-navigation/stack";
+  Icon,
+} from "@ui-kitten/components";
+import { EvaIconsPack } from "@ui-kitten/eva-icons";
+import * as eva from "@eva-design/eva";
 
-type IProps = {
-  route: {
-    params: {
-      userId: string;
-      goalId: string;
-    };
-  };
-  navigation: StackNavigationProp<any>;
-};
+const PlusIcon = (props) => <Icon {...props} name="plus-outline" />;
 
-const GoalProgress: React.FC<IProps> = ({ route, navigation }) => {
-  const { userId, goalId } = route.params;
-  const [goal, setGoal] = useState<Goal | null>(null);
+interface ProgressUploadProps {
+  route: { params: { userId: string; goalId: string } };
+}
 
-  const fetchGoal = async () => {
-    const goal = await storage.getGoal(userId, goalId);
-    setGoal(goal);
-  };
+const ProgressUpload: React.FC<ProgressUploadProps> = ({ route }) => {
+  const [url, setUrl] = useState<string>("");
 
-  useEffect(() => {
-    fetchGoal();
-  }, []);
-
-  const handlePressLink = (url: string) => {
-    Linking.canOpenURL(url).then((supported) => {
-      if (supported) {
-        Linking.openURL(url);
-      } else {
-        console.log(`Don't know how to open URL: ${url}`);
-      }
-    });
+  const handleSubmit = async () => {
+    const newProgress = { timestamp: Date.now(), link: url };
+    await updateProgress(route.params.userId, route.params.goalId, newProgress);
+    setUrl("");
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Goal Progress</Text>
-        {goal &&
-          goal.progress.map((progressDay, index) => (
-            <View key={index} style={styles.progressDay}>
-              <Text style={styles.day}>Day {progressDay.day}</Text>
-              <Text style={styles.date}>
-                Date:{" "}
-                {new Date(progressDay.timestamp * 1000).toLocaleDateString()}
-              </Text>
-              <TouchableOpacity
-                onPress={() => handlePressLink(progressDay.link || "")}
-              >
-                <Text style={styles.link}>View Progress</Text>
-              </TouchableOpacity>
-              <View style={styles.separator} />
-            </View>
-          ))}
-      </View>
-      <Button
-        title="Upload Progress"
-        onPress={() =>
-          navigation.navigate("ProgressUpload", { userId, goalId })
-        }
-      />
-    </ScrollView>
+    <>
+      <IconRegistry icons={EvaIconsPack} />
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <Layout style={styles.container}>
+          <Text category="h1">Upload Your Progress</Text>
+          <Input
+            style={styles.input}
+            placeholder="URL"
+            value={url}
+            onChangeText={setUrl}
+            autoCapitalize="none"
+            keyboardType="url"
+            textContentType="URL"
+          />
+          <Button style={styles.button} onPress={handleSubmit}>
+            Submit
+          </Button>
+          <Button
+            style={styles.fab}
+            accessoryLeft={PlusIcon}
+            onPress={handleSubmit}
+          />
+        </Layout>
+      </ApplicationProvider>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    padding: 16,
     flex: 1,
-    padding: 20,
+    justifyContent: "center",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
+  input: {
+    marginVertical: 16,
   },
-  progressDay: {
-    marginBottom: 20,
+  button: {
+    marginVertical: 8,
   },
-  day: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  date: {
-    fontSize: 16,
-    color: "#555",
-  },
-  link: {
-    color: "blue",
-    textDecorationLine: "underline",
-  },
-  separator: {
-    height: 1,
-    backgroundColor: "#ddd",
-    marginVertical: 10,
+  fab: {
+    position: "absolute",
+    right: 16,
+    bottom: 16,
   },
 });
 
-export default GoalProgress;
+export default ProgressUpload;
