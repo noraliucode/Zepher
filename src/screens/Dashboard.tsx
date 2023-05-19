@@ -1,13 +1,22 @@
 // Dashboard.tsx
 import React, { useEffect, useState } from "react";
-import { Text, View, SafeAreaView, StyleSheet, FlatList } from "react-native";
+import {
+  Text,
+  View,
+  SafeAreaView,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import storage from "../services/storageService";
+import { useNavigation } from "@react-navigation/native";
 
 type DashboardProps = {
   userId: string;
 };
 
 const Dashboard = (props: DashboardProps) => {
+  const navigation = useNavigation();
   const [goals, setGoals] = useState<Array<any>>([]);
   const { userId } = props;
 
@@ -19,11 +28,17 @@ const Dashboard = (props: DashboardProps) => {
     fetchGoals();
   }, []);
 
+  const handleGoalPress = (goal: any) => {
+    navigation.navigate("GoalProgress", { goal });
+  };
+
   const renderItem = ({ item }: { item: any }) => (
-    <View style={styles.goal}>
-      <Text style={styles.goalName}>{item.name}</Text>
-      <Text style={styles.goalDescription}>{item.description}</Text>
-    </View>
+    <TouchableOpacity onPress={() => handleGoalPress(item)}>
+      <View style={styles.goal}>
+        <Text style={styles.goalName}>{item.name}</Text>
+        <Text style={styles.goalDescription}>{item.description}</Text>
+      </View>
+    </TouchableOpacity>
   );
 
   return (

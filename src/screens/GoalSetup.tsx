@@ -9,8 +9,8 @@ type IProps = {
 };
 
 const GoalSetup: React.FC<IProps> = (props) => {
-  const [goalName, setGoalName] = useState("Test");
-  const [goalDescription, setGoalDescription] = useState("Test Description");
+  const [goalName, setGoalName] = useState("");
+  const [goalDescription, setGoalDescription] = useState("");
 
   const { user } = props;
 
@@ -35,9 +35,6 @@ const GoalSetup: React.FC<IProps> = (props) => {
         createdTime: Date.now(),
         progress: [],
       };
-      console.log("user.user.id", user.user.id);
-      console.log("goal", goal);
-
       await storage.createGoal(user.user.id, goal);
       setGoalName("");
       setGoalDescription("");
