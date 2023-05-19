@@ -46,7 +46,7 @@ const GoalProgress: React.FC<IProps> = ({ route, navigation }) => {
         {goal &&
           goal.progress.map((progressDay, index) => (
             <Card key={index} style={{ marginVertical: 8 }}>
-              <Text category="h5">Day {progressDay.day}</Text>
+              <Text category="h5">Day {index + 1}</Text>
               <Text category="p1">
                 Date: {new Date(progressDay.timestamp).toLocaleDateString()}
               </Text>
