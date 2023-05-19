@@ -5,15 +5,19 @@ import { NavigationContainer } from "@react-navigation/native";
 import AppNavigator from "./navigation/AppNavigator";
 import { AuthProvider } from "./context/AuthContext";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { ApplicationProvider } from "@ui-kitten/components";
+import * as eva from "@eva-design/eva";
 
 const App = () => {
   return (
     <SafeAreaProvider>
-      <AuthProvider>
-        <NavigationContainer>
-          <AppNavigator />
-        </NavigationContainer>
-      </AuthProvider>
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <AuthProvider>
+          <NavigationContainer>
+            <AppNavigator />
+          </NavigationContainer>
+        </AuthProvider>
+      </ApplicationProvider>
     </SafeAreaProvider>
   );
 };

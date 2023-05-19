@@ -1,16 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
-import {
-  ApplicationProvider,
-  IconRegistry,
-  Layout,
-  Text,
-  Input,
-  Button,
-  Icon,
-} from "@ui-kitten/components";
-import { EvaIconsPack } from "@ui-kitten/eva-icons";
-import * as eva from "@eva-design/eva";
+import { Layout, Text, Input, Button, Icon } from "@ui-kitten/components";
 import { updateProgress } from "../services/storageService";
 
 const PlusIcon = (props) => <Icon {...props} name="plus-outline" />;
@@ -30,29 +20,26 @@ const ProgressUpload: React.FC<ProgressUploadProps> = ({ route }) => {
 
   return (
     <>
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <Layout style={styles.container}>
-          <Text category="h1">Upload Your Progress</Text>
-          <Input
-            style={styles.input}
-            placeholder="URL"
-            value={url}
-            onChangeText={setUrl}
-            autoCapitalize="none"
-            keyboardType="url"
-            textContentType="URL"
-          />
-          <Button style={styles.button} onPress={handleSubmit}>
-            Submit
-          </Button>
-          <Button
-            style={styles.fab}
-            accessoryLeft={PlusIcon}
-            onPress={handleSubmit}
-          />
-        </Layout>
-      </ApplicationProvider>
+      <Layout style={styles.container}>
+        <Text category="h1">Upload Your Progress</Text>
+        <Input
+          style={styles.input}
+          placeholder="URL"
+          value={url}
+          onChangeText={setUrl}
+          autoCapitalize="none"
+          keyboardType="url"
+          textContentType="URL"
+        />
+        <Button style={styles.button} onPress={handleSubmit}>
+          Submit
+        </Button>
+        <Button
+          style={styles.fab}
+          accessoryLeft={PlusIcon}
+          onPress={handleSubmit}
+        />
+      </Layout>
     </>
   );
 };

@@ -1,6 +1,6 @@
-// GoalSetup.tsx
 import React, { useState } from "react";
-import { View, StyleSheet, TextInput, Button, Alert } from "react-native";
+import { Alert } from "react-native";
+import { Layout, Input, Button } from "@ui-kitten/components";
 import storage from "../services/storageService";
 import { useAuth } from "../context/AuthContext";
 import "react-native-get-random-values";
@@ -11,14 +11,6 @@ const GoalSetup: React.FC = () => {
   const [goalDescription, setGoalDescription] = useState("");
 
   const { user } = useAuth();
-
-  const handleGoalNameChange = (text: string) => {
-    setGoalName(text);
-  };
-
-  const handleGoalDescriptionChange = (text: string) => {
-    setGoalDescription(text);
-  };
 
   const handleSubmit = async () => {
     if (goalName.trim() === "" || goalDescription.trim() === "") {
@@ -48,37 +40,24 @@ const GoalSetup: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        onChangeText={handleGoalNameChange}
+    <Layout
+      style={{ flex: 1, justifyContent: "center", paddingHorizontal: 20 }}
+    >
+      <Input
+        style={{ marginBottom: 20 }}
         value={goalName}
         placeholder="Enter your goal name"
+        onChangeText={setGoalName}
       />
-      <TextInput
-        style={styles.input}
-        onChangeText={handleGoalDescriptionChange}
+      <Input
+        style={{ marginBottom: 20 }}
         value={goalDescription}
         placeholder="Enter your goal description"
+        onChangeText={setGoalDescription}
       />
-      <Button title="Submit Goal" onPress={handleSubmit} />
-    </View>
+      <Button onPress={handleSubmit}>Submit Goal</Button>
+    </Layout>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 20,
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingLeft: 10,
-  },
-});
 
 export default GoalSetup;

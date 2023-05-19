@@ -4,17 +4,7 @@ import { Linking } from "react-native";
 import storage from "../services/storageService";
 import { Goal } from "../utils/types";
 import { StackNavigationProp } from "@react-navigation/stack";
-import {
-  Layout,
-  Text,
-  Button,
-  Card,
-  Divider,
-  ApplicationProvider,
-  IconRegistry,
-} from "@ui-kitten/components";
-import { EvaIconsPack } from "@ui-kitten/eva-icons";
-import * as eva from "@eva-design/eva";
+import { Layout, Text, Button, Card, Divider } from "@ui-kitten/components";
 
 type IProps = {
   route: {
@@ -51,38 +41,35 @@ const GoalProgress: React.FC<IProps> = ({ route, navigation }) => {
 
   return (
     <>
-      <IconRegistry icons={EvaIconsPack} />
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <Layout style={{ flex: 1, padding: 16 }}>
-          <Text category="h1">Goal Progress</Text>
-          {goal &&
-            goal.progress.map((progressDay, index) => (
-              <Card key={index} style={{ marginVertical: 8 }}>
-                <Text category="h5">Day {progressDay.day}</Text>
-                <Text category="p1">
-                  Date:{" "}
-                  {new Date(progressDay.timestamp * 1000).toLocaleDateString()}
-                </Text>
-                <Button
-                  appearance="ghost"
-                  status="info"
-                  onPress={() => handlePressLink(progressDay.link || "")}
-                >
-                  View Progress
-                </Button>
-                <Divider />
-              </Card>
-            ))}
-          <Button
-            style={{ marginTop: 16 }}
-            onPress={() =>
-              navigation.navigate("ProgressUpload", { userId, goalId })
-            }
-          >
-            Upload Progress
-          </Button>
-        </Layout>
-      </ApplicationProvider>
+      <Layout style={{ flex: 1, padding: 16 }}>
+        <Text category="h1">Goal Progress</Text>
+        {goal &&
+          goal.progress.map((progressDay, index) => (
+            <Card key={index} style={{ marginVertical: 8 }}>
+              <Text category="h5">Day {progressDay.day}</Text>
+              <Text category="p1">
+                Date:{" "}
+                {new Date(progressDay.timestamp * 1000).toLocaleDateString()}
+              </Text>
+              <Button
+                appearance="ghost"
+                status="info"
+                onPress={() => handlePressLink(progressDay.link || "")}
+              >
+                View Progress
+              </Button>
+              <Divider />
+            </Card>
+          ))}
+        <Button
+          style={{ marginTop: 16 }}
+          onPress={() =>
+            navigation.navigate("ProgressUpload", { userId, goalId })
+          }
+        >
+          Upload Progress
+        </Button>
+      </Layout>
     </>
   );
 };
