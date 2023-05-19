@@ -2,17 +2,13 @@
 import React, { useState } from "react";
 import { View, StyleSheet, TextInput, Button, Alert } from "react-native";
 import storage from "../services/storageService";
-import { User } from "@react-native-google-signin/google-signin";
+import { useAuth } from "../context/AuthContext";
 
-type IProps = {
-  user: User;
-};
-
-const GoalSetup: React.FC<IProps> = (props) => {
+const GoalSetup: React.FC = () => {
   const [goalName, setGoalName] = useState("");
   const [goalDescription, setGoalDescription] = useState("");
 
-  const { user } = props;
+  const { user } = useAuth();
 
   const handleGoalNameChange = (text: string) => {
     setGoalName(text);
@@ -35,7 +31,9 @@ const GoalSetup: React.FC<IProps> = (props) => {
         createdTime: Date.now(),
         progress: [],
       };
-      await storage.createGoal(user.user.id, goal);
+      if (user) {
+        await storage.createGoal(user.user.id, goal);
+      }
       setGoalName("");
       setGoalDescription("");
       Alert.alert("Goal created successfully");

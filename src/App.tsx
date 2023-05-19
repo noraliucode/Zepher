@@ -1,26 +1,19 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { registerRootComponent } from "expo";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import AppNavigator from "./navigation/AppNavigator";
+import { AuthProvider } from "./context/AuthContext";
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <AppNavigator />
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <AppNavigator />
+      </NavigationContainer>
+    </AuthProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 registerRootComponent(App);
 

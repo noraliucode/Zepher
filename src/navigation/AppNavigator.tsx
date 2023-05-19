@@ -7,7 +7,6 @@ import GoalProgress from "../screens/GoalProgress";
 import GoalSetup from "../screens/GoalSetup";
 import ProgressUpload from "../screens/ProgressUpload";
 import UserLogin from "../screens/UserLogin";
-import UserRegistration from "../screens/UserRegistration";
 import MainApp from "../screens/MainApp";
 
 const Stack = createStackNavigator();
@@ -21,7 +20,6 @@ const AppNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="UserLogin" component={UserLogin} />
-      <Stack.Screen name="UserRegistration" component={UserRegistration} />
       <Stack.Screen name="Dashboard" component={Dashboard} />
       <Stack.Screen name="GoalSetup" component={GoalSetup} />
       <Stack.Screen name="GoalProgress" component={GoalProgress} />

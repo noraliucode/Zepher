@@ -10,19 +10,16 @@ import {
 } from "react-native";
 import storage from "../services/storageService";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../context/AuthContext";
 
-type DashboardProps = {
-  userId: string;
-};
-
-const Dashboard = (props: DashboardProps) => {
+const Dashboard = () => {
   const navigation = useNavigation();
   const [goals, setGoals] = useState<Array<any>>([]);
-  const { userId } = props;
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchGoals = async () => {
-      const goals = await storage.getGoals(userId);
+      const goals = await storage.getGoals(user?.user.id);
       setGoals(goals);
     };
     fetchGoals();

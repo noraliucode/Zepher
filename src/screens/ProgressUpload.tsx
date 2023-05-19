@@ -13,7 +13,7 @@ const ProgressUpload: React.FC<ProgressUploadProps> = ({ onSubmit }) => {
       onSubmit(url);
       setUrl("");
     } else {
-      //   alert("Please input a valid URL.");
+      alert("Please input a valid URL.");
     }
   };
 

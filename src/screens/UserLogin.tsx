@@ -2,16 +2,16 @@ import React from "react";
 import { View, StyleSheet, Button } from "react-native";
 import authService from "../services/authService";
 import { IOnLogin } from "../utils/types";
+import { useAuth } from "../context/AuthContext";
 
-interface IProps {
-  onLogin: IOnLogin;
-}
-
-const UserLogin: React.FC<IProps> = ({ onLogin }) => {
+const UserLogin: React.FC = () => {
+  const { handleLogin } = useAuth();
   const signIn = async () => {
     try {
       const user = await authService.signIn();
-      onLogin(user);
+      if (user) {
+        handleLogin(user);
+      }
     } catch (error) {
       console.error(error);
     }
